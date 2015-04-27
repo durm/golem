@@ -20,7 +20,7 @@ def validate(rows):
 def get_path(elem):
     return "/".join([e.get("name", "") for e in elem.xpath("./ancestor::*")])
     
-def parse_tax(rows):
+def parse_taxonomy(rows):
     rows = list(rows)
     assert validate(rows), "Wrong structure"
     tax = etree.Element("tax")
