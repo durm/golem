@@ -1,0 +1,12 @@
+<div>
+
+<form action="{{ url_for('taxonomy_update') }}" method="post" enctype="multipart/form-data">
+    <legend>Обновить таксономию</legend>
+    <input type="file" name="file"/>
+    <input type="submit"/>
+</form>
+
+{% set axis=get_axis(None) %}
+{% include "axis.html" %}
+
+</div>

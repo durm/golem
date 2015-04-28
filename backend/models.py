@@ -31,3 +31,11 @@ class Rubric(Base):
 
     parent = relationship('Rubric', remote_side=[id])
     
+    @staticmethod
+    def has_children(session, rubric):
+        print ("!!!!!", id)
+        return session.query(Rubric).filter(Rubric.parent==rubric).first() is not None
+        
+    @staticmethod
+    def get_children(session, rubric=None):
+        return session.query(Rubric).filter(Rubric.parent==(rubric if rubric is not None else None))

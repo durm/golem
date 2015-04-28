@@ -1,0 +1,11 @@
+<ul>
+{% for node in axis %}
+<li>
+    {{ node.name }}
+    {% if has_children(node) %}
+        {% set axis=get_axis(node) %}
+        {% include "axis.html" %}
+    {% endif %}
+</li>
+{% endfor %}
+</ul>

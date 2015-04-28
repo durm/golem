@@ -2,7 +2,7 @@
 
 from lxml import etree
 
-def gen_indentation_level(row, level_indent=4):
+def get_indentation_level(row, level_indent=4):
     row = row.replace("\t", " "*level_indent)
     i = 0
     while row[i] == " " :
@@ -12,7 +12,7 @@ def gen_indentation_level(row, level_indent=4):
 def validate(rows):
     current_level = 0
     for row in rows :
-        level = gen_indentation_level(row)
+        level = get_indentation_level(row)
         if level - current_level > 1 : return False
         current_level = level
     return True
@@ -27,7 +27,7 @@ def parse_taxonomy(rows):
     current_root = None
     current_level = 0
     for k, row in enumerate(rows) :
-        level = gen_indentation_level(row)
+        level = get_indentation_level(row)
         elem = etree.Element("node")
         name = row.strip().lower().capitalize()
         elem.set("name", name)
