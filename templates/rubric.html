@@ -1,4 +1,11 @@
 <div>
+    <p>
+        <ul>
+        {% for step in rubric_path %}
+            <li><a href="{{ url_for('taxonomy_rubric', id=step.id) }}">{{ step.name }}</a></li>
+        {% endfor %}
+        </ul>
+    </p>
     <h1>{{ rubric.name }}</h1>
     {% if rubric.desc %}
         <h2>{{ rubric.desc }}</h2>
@@ -8,7 +15,9 @@
         <ul>
             {% for subrubric in subrubrics %}
                 <li>
-                    {{ subrubric.name }}
+                    <a href="{{ url_for('taxonomy_rubric', id=subrubric.id) }}">
+                        {{ subrubric.name }}
+                    </a>
                 </li>
             {% endfor %}
         </ul>

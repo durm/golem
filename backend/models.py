@@ -43,12 +43,26 @@ class Rubric(Base):
     parent = relationship('Rubric', remote_side=[id])
     
     @staticmethod
+    def get_taxonomy_path(rubric):
+        path = []
+        current = rubric
+        while current is not None :
+            path.insert(0,current)
+            current = current.parent
+        return path
+        
+    @staticmethod
     def has_children(session, rubric):
         return session.query(Rubric).filter(Rubric.parent==rubric).first() is not None
         
     @staticmethod
     def get_children(session, rubric=None):
         return session.query(Rubric).filter(Rubric.parent==(rubric if rubric is not None else None))
+    
+    @staticmethod
+    def get_products(session, rubric=None):
+        #return session.query(Product).filter(Rubric.rubrics==(rubric if rubric is not None else None))
+        return []
         
 class Product(Base):
 

@@ -45,10 +45,11 @@ def taxonomy_rubric(id):
     rubric = g.db.query(Rubric).get(int(id))
     if rubric is None : abort(404)
     subrubrics = Rubric.get_children(g.db, rubric=rubric)
-    
+    rubric_path = Rubric.get_taxonomy_path(rubric)
     kwargs = {
         "rubric": rubric,
-        "subrubrics": subrubrics
+        "subrubrics": subrubrics,
+        "rubric_path": rubric_path,
     }
     return render_template("rubric.html", **kwargs)
 
