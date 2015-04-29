@@ -1,0 +1,26 @@
+<div>
+    <h1>{{ rubric.name }}</h1>
+    {% if rubric.desc %}
+        <h2>{{ rubric.desc }}</h2>
+    {% endif %}
+    {% if subrubrics %}
+        <h3>Подрубрики</h3>
+        <ul>
+            {% for subrubric in subrubrics %}
+                <li>
+                    {{ subrubric.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if products %}
+        <h3>Продукты</h3>
+        <ul>
+            {% for product in products %}
+                <li>
+                    {{ product.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>

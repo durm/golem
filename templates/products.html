@@ -1,0 +1,13 @@
+<div>
+    <h3>Продукты</h3>
+    <p>
+        Найдено: {{ products_count }}
+    </p>
+    {% if products %}
+        <ul>
+            {% for product in products %}
+                <li>{{ product.name }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>

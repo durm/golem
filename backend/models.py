@@ -9,12 +9,23 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = "user"
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     username = Column(String)
     passwd = Column(String)
     email = Column(String)
     full_name = Column(String)
     phone = Column(String, nullable=True)
+    
+class Vendor(Base):
+    
+    __tablename__ = "vendor"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    
+    name = Column(String)
+    desc = Column(String, nullable=True)
+    
+    logo = Column(String, nullable=True)
     
 class Rubric(Base):
     __tablename__ = "rubric"
@@ -33,9 +44,19 @@ class Rubric(Base):
     
     @staticmethod
     def has_children(session, rubric):
-        print ("!!!!!", id)
         return session.query(Rubric).filter(Rubric.parent==rubric).first() is not None
         
     @staticmethod
     def get_children(session, rubric=None):
         return session.query(Rubric).filter(Rubric.parent==(rubric if rubric is not None else None))
+        
+class Product(Base):
+
+    __tablename__ = "product"
+    
+    id = Column(Integer, primary_key=True, autoincrement=True)
+
+    name = Column(String)
+    desc = Column(String, nullable=True)
+    
+    logo = Column(String, nullable=True)

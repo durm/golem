@@ -11,8 +11,8 @@ def create_rubrics(s, tax, parent=None):
         s.add(r)
         create_rubrics(s, rubric, r)
 
-def update_taxonomy(tax):
-    s = session()
+def update_taxonomy(tax, s=None):
+    s = session() if s is None else s
     s.query(Rubric).delete()
     create_rubrics(s, tax)
     s.commit()
