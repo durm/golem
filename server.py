@@ -53,16 +53,46 @@ def taxonomy_rubric(id):
     }
     return render_template("rubric.html", **kwargs)
 
-@app.route("/products/")
-def products():
-    products = g.db.query(Product).all()
-    products_count = g.db.query(Product).count()
-    kwargs = {
-        "products": products,
-        "products_count": products_count
+def cls_list_args(cls, h):
+    objs = g.db.query(cls).all()
+    objs_count = g.db.query(cls).count()
+    return {
+        "objs": objs,
+        "objs_count": objs_count,
+        "h": h,
+        "delete_point": url_for(build_view_name(cls.__tablename__, "delete")),
     }
-    return render_template("products.html", **kwargs)    
+    
+def cls_list(cls, h):
+    return render_template("list.html", **cls_list_args(cls, h))
 
+def build_url(*args):
+    return "/{0}/".format("/".join(args))
+    
+def build_view_name(*args):
+    return "_".join(args)
+
+@app.route(build_url(Rubric.__tablename__))
+def rubric(): return cls_list(Rubric, "Рубрики")
+
+@app.route(build_url(Product.__tablename__))
+def product(): return cls_list(Product, "Продукты")   
+
+@app.route(build_url(Vendor.__tablename__))
+def vendor(): return cls_list(Vendor, "Производители")
+
+def cls_list_delete(s, cls, ids):
+    s.query(cls).filter(cls.id.in_(ids)).delete(synchronize_session=False)
+    s.commit()
+
+def cls_list_delete_view(s, cls, ids):
+    cls_list_delete(s, cls, ids)
+    return redirect(url_for(build_view_name(cls.__tablename__)))
+
+@app.route(build_url(Vendor.__tablename__, "delete"), methods=["post"])
+def rubric_delete(): return cls_list_delete_view(g.db, Rubric, request.form.getlist("obj"))
+    
 if __name__ == "__main__" :
     app.debug = True
     app.run()
+

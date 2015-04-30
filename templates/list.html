@@ -1,0 +1,21 @@
+<div>
+    <h3>{{ h }}</h3>
+    <p>
+        Найдено: {{ objs_count }}
+    </p>
+    {% if objs %}
+        <form action="{{ delete_point }}" method="post">
+        <input type="submit" value="Удалить"/>
+        <ol>
+            {% for obj in objs %}
+                <li>
+                    <label for="">
+                        <input type="checkbox" name="obj" value="{{ obj.id }}"/>
+                    {{ obj.name }}
+                    </label>
+                </li>
+            {% endfor %}
+        </ol>
+        </form>
+    {% endif %}
+</div>
