@@ -44,7 +44,7 @@ def taxonomy():
 @app.route("/taxonomy/rubric/<id>/")
 def taxonomy_rubric(id):
     rubric = g.db.query(Rubric).get(int(id))
-    if rubric is None and id != 0 : abort(404)
+    if rubric is None and id is not None : abort(404)
     subrubrics = Rubric.get_children(g.db, rubric=rubric)
     rubric_path = Rubric.get_taxonomy_path(rubric)
     kwargs = {

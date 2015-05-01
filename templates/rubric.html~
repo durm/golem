@@ -10,6 +10,15 @@
         <h2>{{ rubric.desc }}</h2>
     {% endif %}
     {% include "subrubrics.html" %}
-    {% include "products.html" %}
+    {% if products %}
+        <h3>Продукты</h3>
+        <ul>
+            {% for product in products %}
+                <li>
+                    {{ product.name }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>
 {% endblock %}

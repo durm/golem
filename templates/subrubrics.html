@@ -1,0 +1,17 @@
+{% if subrubrics %}
+    <ul class="blocks-5">
+        {% for subrubric in subrubrics %}
+            <li {% if loop.index + 1 % 5 == 0 %}class="block-first"{% endif %}>
+                <a href="{{ url_for('taxonomy_rubric', id=subrubric.id) }}" title="{{ subrubric.name }}">
+                    <img src="/static/img/folder-128.png"/>
+                    <br/>
+                    {% if subrubric.name|length > 20 %}
+                        {{ subrubric.name[:17] }}...
+                    {% else %}
+                        {{ subrubric.name }}
+                    {% endif %}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}
