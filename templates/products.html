@@ -1,7 +1,7 @@
 {% if products %}
-    <ul class="blocks-5">
+    <ul class="blocks-4">
         {% for product in products %}
-            <li {% if loop.index + 1 % 5 == 0 %}class="block-first"{% endif %}>
+            <li {% if loop.index + 1 % 4 == 0 %}class="block-first"{% endif %}>
                 <a href="#" title="{{ product.name }}">
                     <img src="/static/img/product-128.png"/>
                     <br/>

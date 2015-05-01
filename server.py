@@ -47,10 +47,14 @@ def taxonomy_rubric(id):
     if rubric is None and id != 0 : abort(404)
     subrubrics = Rubric.get_children(g.db, rubric=rubric)
     rubric_path = Rubric.get_taxonomy_path(rubric)
+    get_axis=lambda x: Rubric.get_children(g.db, rubric=x)
+    has_children=lambda x: Rubric.has_children(g.db, x)
     kwargs = {
         "rubric": rubric,
         "subrubrics": subrubrics,
         "rubric_path": rubric_path,
+        "get_axis": get_axis,
+        "has_children": has_children,
     }
     return render_template("rubric.html", **kwargs)
 

@@ -1,24 +1,32 @@
 <nav class="breadcrumbs">
     <ul>
-    {% if rubric %}
         <li>
-            <a href="{{ url_for('taxonomy_rubric') }}">Таксономия</a>
-        </li>
-    {% endif %}
-    {% for step in rubric_path %}
-        <li>
-            {% if rubric.id == step.id %}
+            {% if not rubric %}
                 <span>
             {% else %}
-                <a href="{{ url_for('taxonomy_rubric', id=step.id) }}">
+                <a href="{{ url_for('taxonomy_rubric') }}">
             {% endif %}
-            {{ step.name }}
-            {% if rubric.id == step.id %}
+            Таксономия
+            {% if not rubric %}
                 </span>
             {% else %}
                 </a>
             {% endif %}
         </li>
-    {% endfor %}
+        {% for step in rubric_path %}
+            <li>
+                {% if rubric.id == step.id %}
+                    <span>
+                {% else %}
+                    <a href="{{ url_for('taxonomy_rubric', id=step.id) }}">
+                {% endif %}
+                {{ step.name }}
+                {% if rubric.id == step.id %}
+                    </span>
+                {% else %}
+                    </a>
+                {% endif %}
+            </li>
+        {% endfor %}
     </ul>
 </nav>

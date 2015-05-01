@@ -4,12 +4,20 @@
 
 {% block page_content %}
 <div id="main">
-    {% include "breadcrumbs.html" %}
-    <h1>{{ rubric.name }}</h1>
-    {% if rubric.desc %}
-        <h2>{{ rubric.desc }}</h2>
-    {% endif %}
-    {% include "subrubrics.html" %}
-    {% include "products.html" %}
+    <div class="units-row">
+        <div class="unit-30" style="overflow-x: auto; white-space: nowrap;">
+            {% set axis=get_axis(None) %}
+            {% include "rubric_axis.html" %}
+        </div>
+        <div class="unit-70">
+            {% include "breadcrumbs.html" %}
+            <h1>{{ rubric.name }}</h1>
+            {% if rubric.desc %}
+                <h2>{{ rubric.desc }}</h2>
+            {% endif %}
+            {% include "subrubrics.html" %}
+            {% include "products.html" %}
+        </div>
+    </div>
 </div>
 {% endblock %}

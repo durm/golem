@@ -1,0 +1,21 @@
+<ul>
+{% for node in axis %}
+<li>
+    {% if rubric.id == node.id %}
+        <span>
+    {% else %}
+        <a href="{{ url_for('taxonomy_rubric', id=node.id) }}">
+    {% endif %}
+    {{ node.name }}
+    {% if rubric.id == node.id %}
+        </span>
+    {% else %}
+        </a>
+    {% endif %}
+    {% if node in rubric_path and has_children(node) %}
+        {% set axis=get_axis(node) %}
+        {% include "rubric_axis.html" %}
+    {% endif %}
+</li>
+{% endfor %}
+</ul>
