@@ -1,3 +1,12 @@
 #main {
     padding: 0 10px;
 }
+
+ul.axis_view {
+list-style: none;
+margin-left: 15px;
+}
+
+ul.axis_view li:before {
+content: "\00BB \0020";
+}
