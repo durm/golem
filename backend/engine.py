@@ -3,7 +3,13 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-engine = create_engine('sqlite:///db.sqlite', echo=True)
+try:
+    import aksconf
+    DB_URL = aksconf.DB_URL
+except:
+    DB_URL = "sqlite:///db.sqlite"
+
+engine = create_engine(DB_URL, echo=True)
 session = sessionmaker()
 session.configure(bind=engine)
 
