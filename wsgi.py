@@ -6,19 +6,19 @@ from backend.models import Rubric, Product, Vendor
 from update_taxonomy import update_taxonomy
 from parse_taxonomy import parse_taxonomy
 
-app = Flask(__name__)
+application = Flask(__name__)
 
-@app.before_request
+@application.before_request
 def before_request():
     g.db = session()
     
-@app.teardown_request
+@application.teardown_request
 def teardown_request(exception):
     db = getattr(g, 'db', None)
     if db is not None:
         db.close()
 
-@app.route("/taxonomy/update/", methods=["POST"])
+@application.route("/taxonomy/update/", methods=["POST"])
 def taxonomy_update():
     file = request.files["file"]
     if file :
@@ -30,7 +30,7 @@ def taxonomy_update():
     else:
         abort(502)
         
-@app.route("/taxonomy/")
+@application.route("/taxonomy/")
 def taxonomy():
     get_axis=lambda x: Rubric.get_children(g.db, rubric=x)
     has_children=lambda x: Rubric.has_children(g.db, x)
@@ -40,12 +40,9 @@ def taxonomy():
     }
     return render_template("taxonomy.html", **kwargs)
 
-@app.route("/", defaults={'id': 0})   
-<<<<<<< HEAD
-=======
-@app.route("/taxonomy/rubric/", defaults={'id': 0})   
->>>>>>> 04d2b3f9cbaed3f3a05e984c937c50008f0b76d7
-@app.route("/taxonomy/rubric/<id>/")
+@application.route("/", defaults={'id': 0})  
+@application.route("/taxonomy/rubric/", defaults={'id': 0}) 
+@application.route("/taxonomy/rubric/<id>/")
 def taxonomy_rubric(id):
     rubric = g.db.query(Rubric).get(int(id))
     roots = Rubric.get_children(g.db, rubric=None)
@@ -85,13 +82,13 @@ def build_url(*args):
 def build_view_name(*args):
     return "_".join(args)
 
-@app.route(build_url(Rubric.__tablename__))
+@application.route(build_url(Rubric.__tablename__))
 def rubric(): return cls_list(Rubric, "Рубрики")
 
-@app.route(build_url(Product.__tablename__))
+@application.route(build_url(Product.__tablename__))
 def product(): return cls_list(Product, "Продукты")   
 
-@app.route(build_url(Vendor.__tablename__))
+@application.route(build_url(Vendor.__tablename__))
 def vendor(): return cls_list(Vendor, "Производители")
 
 def cls_list_delete(s, cls, ids):
@@ -102,33 +99,33 @@ def cls_list_delete_view(s, cls, ids):
     cls_list_delete(s, cls, ids)
     return redirect(url_for(build_view_name(cls.__tablename__)))
 
-@app.route(build_url(Rubric.__tablename__, "delete"), methods=["post"])
+@application.route(build_url(Rubric.__tablename__, "delete"), methods=["post"])
 def rubric_delete(): return cls_list_delete_view(g.db, Rubric, request.form.getlist("obj"))
 
-@app.route(build_url(Vendor.__tablename__, "delete"), methods=["post"])
+@application.route(build_url(Vendor.__tablename__, "delete"), methods=["post"])
 def vendor_delete(): return cls_list_delete_view(g.db, Vendor, request.form.getlist("obj"))
 
-@app.route(build_url(Product.__tablename__, "delete"), methods=["post"])
+@application.route(build_url(Product.__tablename__, "delete"), methods=["post"])
 def product_delete(): return cls_list_delete_view(g.db, Product, request.form.getlist("obj"))
 
-@app.route(build_url(Rubric.__tablename__, "create"))
+@application.route(build_url(Rubric.__tablename__, "create"))
 def rubric_create(): return "rubric create"
 
-@app.route(build_url(Vendor.__tablename__, "create"))
+@application.route(build_url(Vendor.__tablename__, "create"))
 def vendor_create(): return "vendor create"
 
-@app.route(build_url(Product.__tablename__, "create"))
+@application.route(build_url(Product.__tablename__, "create"))
 def product_create(): return "product create"
 
-@app.route(build_url(Rubric.__tablename__, "edit", "<id>"))
+@application.route(build_url(Rubric.__tablename__, "edit", "<id>"))
 def rubric_edit(id): return "rubric edit " + str(id)
 
-@app.route(build_url(Vendor.__tablename__, "edit", "<id>"))
+@application.route(build_url(Vendor.__tablename__, "edit", "<id>"))
 def vendor_edit(id): return "vendor edit " + str(id)
 
-@app.route(build_url(Product.__tablename__, "edit", "<id>"))
+@application.route(build_url(Product.__tablename__, "edit", "<id>"))
 def product_edit(id): return "product edit " + str(id)
     
 if __name__ == "__main__" :
-    app.debug = True
-    app.run()
+    application.debug = True
+    application.run()
