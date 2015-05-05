@@ -1,10 +1,10 @@
 #-*- coding: utf-8 -*-
 
 from flask import Flask, render_template, request, redirect, url_for, g, abort
-from backend.engine import session
-from backend.models import Rubric, Product, Vendor
-from update_taxonomy import update_taxonomy
-from parse_taxonomy import parse_taxonomy
+from golem.backend.engine import session
+from golem.backend.models import Rubric, Product, Vendor
+from golem.update_taxonomy import update_taxonomy
+from golem.parse_taxonomy import parse_taxonomy
 
 application = Flask(__name__)
 application.debug = True

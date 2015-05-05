@@ -1,9 +1,9 @@
 #-*- coding: utf-8 -*-
 
-from parse_taxonomy import parse_taxonomy
+from golem.parse_taxonomy import parse_taxonomy
 from lxml import etree
-from backend.models import Rubric
-from backend.engine import session
+from golem.backend.models import Rubric
+from golem.backend.engine import session
 
 def create_rubrics(s, tax, parent=None):
     for rubric in tax :
