@@ -40,10 +40,11 @@ def taxonomy():
     }
     return render_template("taxonomy.html", **kwargs)
 
-@app.route("/taxonomy/rubric/", defaults={'id': 0})   
+@app.route("/", defaults={'id': 0})   
 @app.route("/taxonomy/rubric/<id>/")
 def taxonomy_rubric(id):
     rubric = g.db.query(Rubric).get(int(id))
+    roots = Rubric.get_children(g.db, rubric=None)
     if rubric is None and id != 0 : abort(404)
     subrubrics = Rubric.get_children(g.db, rubric=rubric)
     rubric_path = Rubric.get_taxonomy_path(rubric)
@@ -51,6 +52,7 @@ def taxonomy_rubric(id):
     has_children=lambda x: Rubric.has_children(g.db, x)
     kwargs = {
         "rubric": rubric,
+        "roots": roots,
         "subrubrics": subrubrics,
         "rubric_path": rubric_path,
         "get_axis": get_axis,
@@ -126,4 +128,3 @@ def product_edit(id): return "product edit " + str(id)
 if __name__ == "__main__" :
     app.debug = True
     app.run()
-

@@ -1,3 +1,98 @@
+body {
+    border-top: #000000 solid 3px;
+    background: none repeat scroll 0 0 #fff;
+    color: #222;
+    font-family: "Helvetica Neue",Helvetica,Tahoma,sans-serif;
+    font-size: 0.9375em;
+    line-height: 1.65em;
+}
+
+.wrap, #main, #footer {
+    margin: auto;
+    max-width: 1200px;
+    padding: 0 20px;
+}
+
+#header {
+    background: none repeat scroll 0 0 #f2f2f2;
+    margin-bottom: 40px;
+    padding: 25px 0;
+    height: 130px;
+}
+
+#nav #logo {
+    background: none repeat scroll 0 0 #3a4fb9;
+    border-radius: 2px;
+    color: #fff;
+    float: left;
+    font-size: 14px;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-right: 54px;
+    padding: 1px 3px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+#logo img {
+height: 75px;
+}
+
+.navbar::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+.navbar::after {
+    clear: both;
+    content: "";
+    display: table;
+}
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+#nav nav {
+    float: left;
+    font-size: 16px;
+    margin: 20px 0 0 0;
+}
+
+#nav nav a {
+    color: #000;
+    transition: all 0.2s linear 0s;
+}
+#nav nav a, #nav nav span {
+    line-height: 1;
+    padding: 10px 0 5px;
+}
+.navbar a, .navbar span {
+    display: block;
+    text-decoration: none;
+}
+
+#nav #user-area {
+    list-style: outside none none;
+    margin: 0;
+    padding-top: 25px;
+}
+
+#nav #user-area li {
+    float: right;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+#nav #user-area a {
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    color: rgba(0, 0, 0, 0.7);
+    display: block;
+    line-height: 1;
+    padding: 8px 12px 7px;
+    text-decoration: none;
+    transition: all 0.2s linear 0s;
+}
+
 #main {
     padding: 0 10px;
 }
@@ -9,4 +104,17 @@ margin-left: 15px;
 
 ul.axis_view li:before {
 content: "\00BB \0020";
+}
+
+.navbar-pills-gray-example a {
+    background: none repeat scroll 0 0 #f0f1f2;
+    color: #000;
+}
+.navbar-pills-gray-example a:hover {
+    background: none repeat scroll 0 0 #e0e3e5;
+}
+.navbar-pills-gray-example li.active a, .navbar-pills-gray-example span {
+    background: none repeat scroll 0 0 #f7f8f8;
+    box-shadow: 0 1px 3px #888 inset;
+    color: rgba(0, 0, 0, 0.4);
 }
