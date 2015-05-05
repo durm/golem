@@ -10,10 +10,10 @@ class User(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    username = Column(String)
-    passwd = Column(String)
-    email = Column(String)
-    full_name = Column(String)
+    username = Column(String(128))
+    passwd = Column(String(128))
+    email = Column(String(128))
+    full_name = Column(String(128))
     phone = Column(String, nullable=True)
     
 class Vendor(Base):
@@ -22,21 +22,21 @@ class Vendor(Base):
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     
-    name = Column(String)
-    desc = Column(String, nullable=True)
+    name = Column(String(128))
+    desc = Column(Text, nullable=True)
     
-    logo = Column(String, nullable=True)
+    logo = Column(String(255), nullable=True)
     
 class Rubric(Base):
     __tablename__ = "rubric"
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     
-    name = Column(String)
-    desc = Column(String, nullable=True)
+    name = Column(String(128))
+    desc = Column(Text, nullable=True)
     
-    logo = Column(String, nullable=True)
-    path = Column(String, nullable=True)
+    logo = Column(String(255), nullable=True)
+    path = Column(String(255), nullable=True)
     
     parent_id = Column(Integer, ForeignKey('rubric.id'))
 
@@ -70,7 +70,7 @@ class Product(Base):
     
     id = Column(Integer, primary_key=True, autoincrement=True)
 
-    name = Column(String)
-    desc = Column(String, nullable=True)
+    name = Column(String(128))
+    desc = Column(Text, nullable=True)
     
-    logo = Column(String, nullable=True)
+    logo = Column(String(255), nullable=True)
