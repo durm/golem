@@ -14,7 +14,7 @@ class User(Base):
     passwd = Column(String(128))
     email = Column(String(128))
     full_name = Column(String(128))
-    phone = Column(String, nullable=True)
+    phone = Column(String(128), nullable=True)
     
 class Vendor(Base):
     
