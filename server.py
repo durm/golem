@@ -41,6 +41,10 @@ def taxonomy():
     return render_template("taxonomy.html", **kwargs)
 
 @app.route("/", defaults={'id': 0})   
+<<<<<<< HEAD
+=======
+@app.route("/taxonomy/rubric/", defaults={'id': 0})   
+>>>>>>> 04d2b3f9cbaed3f3a05e984c937c50008f0b76d7
 @app.route("/taxonomy/rubric/<id>/")
 def taxonomy_rubric(id):
     rubric = g.db.query(Rubric).get(int(id))
