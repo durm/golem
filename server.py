@@ -40,6 +40,7 @@ def taxonomy():
     }
     return render_template("taxonomy.html", **kwargs)
 
+@app.route("/", defaults={'id': 0})   
 @app.route("/taxonomy/rubric/", defaults={'id': 0})   
 @app.route("/taxonomy/rubric/<id>/")
 def taxonomy_rubric(id):
