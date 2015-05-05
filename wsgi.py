@@ -7,6 +7,7 @@ from update_taxonomy import update_taxonomy
 from parse_taxonomy import parse_taxonomy
 
 application = Flask(__name__)
+application.debug = True
 
 @application.before_request
 def before_request():
@@ -127,5 +128,5 @@ def vendor_edit(id): return "vendor edit " + str(id)
 def product_edit(id): return "product edit " + str(id)
     
 if __name__ == "__main__" :
-    application.debug = True
+    
     application.run()
