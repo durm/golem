@@ -2,6 +2,8 @@
 
 from golem.xls.xlstoxml import xls_to_xml_by_path
 from lxml import etree
+from golem.backend.models import Product
+from golem.backend.engine import session
 
 def proc_products(s, price):
     for prd in price.xpath("//product"):
