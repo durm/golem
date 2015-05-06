@@ -17,7 +17,6 @@ class User(Base):
     phone = Column(String(128), nullable=True)
     
 class Vendor(Base):
-    
     __tablename__ = "vendor"
     
     id = Column(Integer, primary_key=True, autoincrement=True)
