@@ -30,7 +30,7 @@ def parse_taxonomy(rows):
         level = get_indentation_level(row)
         elem = etree.Element("node")
         name = row.strip().lower().capitalize()
-        elem.set("name", name)
+        elem.set("name", name.strip())
         elem.set("num", str(k))
         if level == 0 :
             current_level = level
