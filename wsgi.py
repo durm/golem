@@ -1,11 +1,13 @@
 #-*- coding: utf-8 -*-
 
-from flask import Flask, render_template, request, redirect, url_for, g, abort
+from flask import Flask, render_template, request, redirect, url_for, g, abort, Response
 from golem.backend.engine import session
 from golem.backend.models import Rubric, Product, Vendor
 from golem.update_taxonomy import update_taxonomy
 from golem.parse_taxonomy import parse_taxonomy
 import traceback
+from golem.xls.xlstoxml import xls_to_xml_by_fileobject
+from lxml import etree
 
 application = Flask(__name__)
 application.debug = True
@@ -44,8 +46,27 @@ def taxonomy():
         "has_children": has_children
     }
     return render_template("taxonomy.html", **kwargs)
+    
+@application.route("/price/upload/")
+def price_upload():
+    kwargs = {}
+    return render_template("price_upload.html", **kwargs)
+    
+@application.route("/price/parse/", methods=["POST"])
+def price_parse():
+    try:
+        file = request.files["file"]
+        if file :
+            price = xls_to_xml_by_fileobject(file)
+            res = etree.tounicode(price)
+            return Response(res, mimetype='text/xml')
+        else:
+            abort(502)
+    except Exception as e :
+        trace = traceback.format_exc()
+        return str(trace)
 
-@application.route("/", defaults={'id': 0})  
+@application.route("/", defaults={'id': 0})
 @application.route("/taxonomy/rubric/", defaults={'id': 0}) 
 @application.route("/taxonomy/rubric/<id>/")
 def taxonomy_rubric(id):

@@ -1,6 +1,6 @@
 #-*- coding: utf-8 -*-
 
-from sqlalchemy import Column, DateTime, String, Text, Integer, ForeignKey, func
+from sqlalchemy import Column, DateTime, String, Text, Integer, ForeignKey, func, Float, Boolean
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import relationship, backref
 
@@ -72,5 +72,15 @@ class Product(Base):
 
     name = Column(String(128))
     desc = Column(Text, nullable=True)
-    
     logo = Column(String(255), nullable=True)
+    trade_price = Column(Float, nullable=True)
+    retail_price = Column(Float, nullable=True)
+    available_for_trade = Column(Boolean, nullable=True)
+    available_for_retail = Column(Boolean, nullable=True)
+    is_recommend_price = Column(Boolean, nullable=True)
+    external_link = Column(String(255))
+    trade_by_order = Column(Boolean, nullable=True)
+    is_new = Column(Boolean, nullable=True)
+    is_special_price = Column(Boolean, nullable=True)
+    
+    
