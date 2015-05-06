@@ -9,7 +9,7 @@ try:
 except:
     DB_URL = "sqlite:///db.sqlite"
 
-engine = create_engine(DB_URL, echo=True)
+engine = create_engine(DB_URL)
 session = sessionmaker()
 session.configure(bind=engine)
 
