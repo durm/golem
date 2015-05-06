@@ -21,15 +21,18 @@ def teardown_request(exception):
 
 @application.route("/taxonomy/update/", methods=["POST"])
 def taxonomy_update():
-    file = request.files["file"]
-    if file :
-        rows = map(lambda x: x.decode("utf-8"), file.readlines())
-        print (rows)
-        tax = parse_taxonomy(rows)
-        update_taxonomy(tax)
-        return redirect(url_for("taxonomy"))
-    else:
-        abort(502)
+    try:
+        file = request.files["file"]
+        if file :
+            rows = map(lambda x: x.decode("utf-8"), file.readlines())
+            print (rows)
+            tax = parse_taxonomy(rows)
+            update_taxonomy(tax)
+            return redirect(url_for("taxonomy"))
+        else:
+            abort(502)
+    except Exception as e :
+        return str(e)
         
 @application.route("/taxonomy/")
 def taxonomy():
