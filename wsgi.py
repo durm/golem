@@ -32,7 +32,7 @@ def taxonomy_update():
         else:
             abort(502)
     except Exception as e :
-        trace = traceback.print_exc()
+        trace = traceback.format_exc()
         return str(trace)
         
 @application.route("/taxonomy/")
