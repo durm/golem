@@ -24,8 +24,7 @@ def taxonomy_update():
     try:
         file = request.files["file"]
         if file :
-            rows = map(lambda x: x.decode("utf-8"), file.readlines())
-            return str(list(rows))
+            rows = map(lambda x: x.decode("utf-8").strip(), file.readlines())
             tax = parse_taxonomy(rows)
             update_taxonomy(tax)
             return redirect(url_for("taxonomy"))
