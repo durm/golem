@@ -5,6 +5,7 @@ from golem.backend.engine import session
 from golem.backend.models import Rubric, Product, Vendor
 from golem.update_taxonomy import update_taxonomy
 from golem.parse_taxonomy import parse_taxonomy
+import traceback
 
 application = Flask(__name__)
 application.debug = True
@@ -24,14 +25,15 @@ def taxonomy_update():
     try:
         file = request.files["file"]
         if file :
-            rows = map(lambda x: x.strip(), file.readlines())
+            rows = map(lambda x: x.decode("utf-8").strip(), file.readlines())
             tax = parse_taxonomy(rows)
             update_taxonomy(tax)
             return redirect(url_for("taxonomy"))
         else:
             abort(502)
     except Exception as e :
-        return str(e)
+        trace = traceback.print_exc()
+        return str(trace)
         
 @application.route("/taxonomy/")
 def taxonomy():
