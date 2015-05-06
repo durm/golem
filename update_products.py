@@ -18,6 +18,7 @@ def proc_products(s, price):
             "trade_by_order": prd.get("trade_by_order") == "1",
             "is_new": prd.get("is_new") == "1",
             "is_special_price": prd.get("is_special_price") == "1",
+            "is_recommend_price": prd.get("is_recommend_price") == "1",
         }
         product = Product(**kw)
         s.add(product)
