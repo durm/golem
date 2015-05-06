@@ -14,6 +14,6 @@ session = sessionmaker()
 session.configure(bind=engine)
 
 if __name__ == "__main__" :
-    from golem.backend.models import Base
+    from golem.backend.models import *
     engine = create_engine(DB_URL, echo=True)
     Base.metadata.create_all(engine)
