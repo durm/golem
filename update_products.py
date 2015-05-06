@@ -29,3 +29,4 @@ def update_products(price, s=None):
 if __name__ == "__main__":
     import sys
     price = xls_to_xml_by_path(sys.argv[1])
+    update_products(price)

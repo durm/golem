@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, g, abort, 
 from golem.backend.engine import session
 from golem.backend.models import Rubric, Product, Vendor
 from golem.update_taxonomy import update_taxonomy
+from golem.update_products import update_products
 from golem.parse_taxonomy import parse_taxonomy
 import traceback
 from golem.xls.xlstoxml import xls_to_xml_by_fileobject
@@ -58,8 +59,8 @@ def price_parse():
         file = request.files["file"]
         if file :
             price = xls_to_xml_by_fileobject(file)
-            res = etree.tounicode(price)
-            return Response(res, mimetype='text/xml')
+            update_products(price)
+            return redirect(url_for('price_upload'))
         else:
             abort(502)
     except Exception as e :
