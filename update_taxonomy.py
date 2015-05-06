@@ -10,7 +10,6 @@ def create_rubrics(s, tax, parent=None):
         r = Rubric(name=rubric.get("name"), path=rubric.get("path"), parent=parent)
         s.add(r)
         create_rubrics(s, rubric, r)
-        break
 
 def update_taxonomy(tax, s=None):
     s = session() if s is None else s
