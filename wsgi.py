@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 
 from flask import Flask, render_template, request, redirect, url_for, g, abort, Response
+from sqlalchemy import func
 from golem.backend.engine import session
 from golem.backend.models import Rubric, Product, Vendor
 from golem.update_taxonomy import update_taxonomy
@@ -9,6 +10,7 @@ from golem.parse_taxonomy import parse_taxonomy
 import traceback
 from golem.xls.xlstoxml import xls_to_xml_by_fileobject
 from lxml import etree
+from functools import reduce
 
 application = Flask(__name__)
 application.debug = True
@@ -110,6 +112,41 @@ def build_url(*args):
     
 def build_view_name(*args):
     return "_".join(args)
+    
+def query_string(args):
+    print (list(args.items()))
+    return "&".join(map(lambda x: "=".join(map(str, x)), args.items()))
+    
+@application.route("/products/search/")
+def products_search():
+    start = int(request.args.get("start", 0))
+    size = int(request.args.get("size", 20))
+    if 0 > size > 20 : size = 20
+    if 0 > start : start = 0
+    roots = Rubric.get_children(g.db, rubric=None)
+    products = g.db.query(Product)
+    products_count = products.count()
+    products = products.offset(start).limit(size)
+    args = request.args.copy()
+    prev_query_args = None
+    next_query_args = None
+    if start - size >= 0 :
+        args["start"] = start - size
+        prev_query_args = query_string(args)
+    if start + size < products_count :
+        args["start"] = start + size
+        next_query_args = query_string(args)
+    kw = {
+        "products": products,
+        "roots": roots,
+        "start": start,
+        "size": size,
+        "obj_count": products_count,
+        "prev": prev_query_args,
+        "next": next_query_args,
+    }
+    return render_template("products_search.html", **kw)    
+    
 
 @application.route(build_url(Rubric.__tablename__))
 def rubric(): return cls_list(Rubric, "Рубрики")

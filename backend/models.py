@@ -83,11 +83,17 @@ class Product(Base):
     is_special_price = Column(Boolean, nullable=True)
     
     @staticmethod
+    def products(s, start=0, size=20, order_by=None):
+        prds = s.query(Product)
+        prds = prds.order_by(order_by) if order_by is not None else prds
+        return prds.offset(start).limit(size)
+    
+    @staticmethod
     def random_products(s, start=0, finish=20):
         order_by_list = [func.random(), func.rand(), 'dbms_random.value']
         for o in order_by_list :
             try:
-                return s.query(Product).order_by(o)[start:finish]
+                return s.query(Product).order_by(o).offset(0).limit(20)
             except:
                 pass
-    
+        return []

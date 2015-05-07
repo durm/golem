@@ -1,0 +1,9 @@
+{% if products %}
+    <ul class="blocks-4">
+        {% for product in products %}
+            <li {% if loop.index + 1 % 4 == 0 %}class="block-first"{% endif %}>
+                {% include "product_widget.html" %}
+            </li>
+        {% endfor %}
+    </ul>
+{% endif %}

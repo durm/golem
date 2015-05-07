@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block page_title %}{{ rubric.name }}{% endblock %}
+{% block page_title %}Продукты{% endblock %}
 
 {% block page_content %}
 <div id="main">
@@ -22,19 +22,11 @@
 
     <div class="units-row">
         <div class="unit-30" style="overflow-x: auto; white-space: nowrap;">
-        {% if rubric_path %}
-            {% set axis=get_axis(rubric_path.0) %}
-            {% include "rubric_axis.html" %}
-        {% else %}
-            <img src="/static/img/banner.png"/>
-        {% endif %}
+            {% include "products_search_form.html" %}
         </div>
         <div class="unit-70">
-            <h1>{{ rubric.name }}</h1>
-            {% if rubric.desc %}
-                <h2>{{ rubric.desc }}</h2>
-            {% endif %}
             {% include "products_widget.html" %}
+            {% include "pagination.html" %}
         </div>
     </div>
 </div>
