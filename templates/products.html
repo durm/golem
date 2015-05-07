@@ -5,7 +5,7 @@
                 <a href="#" title="{{ product.name }}">
                     <img src="/static/img/product-128.png"/>
                     <br/>
-                    {% if product.name|length > 20 %}
+                    {% if product.name and product.name|length > 20 %}
                         {{ product.name[:17] }}...
                     {% else %}
                         {{ product.name }}

@@ -5,7 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import relationship, backref
 
 Base = declarative_base()
-    
+
 class User(Base):
     __tablename__ = "user"
 
@@ -82,4 +82,12 @@ class Product(Base):
     is_new = Column(Boolean, nullable=True)
     is_special_price = Column(Boolean, nullable=True)
     
+    @staticmethod
+    def random_products(s, start=0, finish=20):
+        order_by_list = [func.random(), func.rand(), 'dbms_random.value']
+        for o in order_by_list :
+            try:
+                return s.query(Product).order_by(o)[start:finish]
+            except:
+                pass
     

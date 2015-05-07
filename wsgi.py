@@ -78,6 +78,7 @@ def taxonomy_rubric(id):
     rubric_path = Rubric.get_taxonomy_path(rubric)
     get_axis=lambda x: Rubric.get_children(g.db, rubric=x)
     has_children=lambda x: Rubric.has_children(g.db, x)
+    products = Product.random_products(g.db)
     kwargs = {
         "rubric": rubric,
         "roots": roots,
@@ -85,6 +86,7 @@ def taxonomy_rubric(id):
         "rubric_path": rubric_path,
         "get_axis": get_axis,
         "has_children": has_children,
+        "products": products,
     }
     return render_template("rubric.html", **kwargs)
 
