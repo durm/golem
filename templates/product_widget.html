@@ -1,9 +1,11 @@
-<a href="#" title="{{ product.name }}">
+<a href="{{ url_for('taxonomy_product', id=product.id) }}" title="{{ product.name }}" style="text-decoration: none;">
     <img src="/static/img/product-128.png"/>
-    <br/>
+    <div>
     {% if product.name and product.name|length > 20 %}
         {{ product.name[:17] }}...
     {% else %}
         {{ product.name }}
     {% endif %}
+    </div>
+    <div>{{ product.retail_price }} руб</div>
 </a>

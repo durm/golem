@@ -90,7 +90,16 @@ def taxonomy_rubric(id):
         "has_children": has_children,
         "products": products,
     }
-    return render_template("rubric.html", **kwargs)
+    return render_template("taxonomy_rubric.html", **kwargs)
+    
+@application.route("/taxonomy/product/<id>/")
+def taxonomy_product(id):
+    product = g.db.query(Product).get(int(id))
+    if product is None: abort(404)
+    kwargs = {
+        "product": product,
+    }
+    return render_template("taxonomy_product.html", **kwargs)
 
 def cls_list_args(cls, h):
     objs = g.db.query(cls).all()
