@@ -31,7 +31,12 @@
             {% endif %}
         </div>
         <div class="unit-70">
-            <h1>{{ product.name }}</h1>
+            <h1>{{ product.get_view_name() }}</h1>
+            {% if product.desc %}
+                <p>
+                    {{ product.desc }}
+                </p>
+            {% endif %}
         </div>
     </div>
 </div>

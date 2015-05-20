@@ -2,14 +2,19 @@
 
 from golem.xls.xlstoxml import xls_to_xml_by_path
 from lxml import etree
-from golem.backend.models import Product
+from golem.backend.models import Product, Vendor
 from golem.backend.engine import session
 
 def proc_products(s, price):
     for prd in price.xpath("//product"):
+        vendor = s.query(Vendor).filter(Vendor.name == prd.get("vendor")).first()
+        if vendor is None :
+            vendor = Vendor(name=prd.get("vendor"))
+            s.add(vendor)
         kw = {
             "name": prd.get("name"),
             "desc": prd.get("short_desc"),
+            "vendor": vendor,
             "available_for_trade": prd.get("available_for_trade") == "1",
             "trade_price": float(prd.get("trade_price", 0)),
             "available_for_retail": prd.get("available_for_retail") == "1",

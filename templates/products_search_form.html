@@ -1,1 +1,10 @@
-form
+<form method="get" action="" class="forms">
+    <label>
+        Наименование
+        <input type="text" name="term" class="width-75" value="{% if args.term %}{{ args.term }}{% endif %}"/>
+    </label>
+    <p>
+        <input type="submit" class="btn-blue"/>
+        <input type="reset"  class="btn"/>
+    </p>
+</form>

@@ -2,9 +2,9 @@
     <img src="/static/img/product-128.png"/>
     <div>
     {% if product.name and product.name|length > 20 %}
-        {{ product.name[:17] }}...
+        {{ product.get_view_name()[:17] }}...
     {% else %}
-        {{ product.name }}
+        {{ product.get_view_name() }}
     {% endif %}
     </div>
     <div>{{ product.retail_price }} руб</div>

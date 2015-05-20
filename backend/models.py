@@ -71,6 +71,10 @@ class Product(Base):
 
     name = Column(String(128))
     desc = Column(Text, nullable=True)
+    
+    vendor_id = Column(Integer, ForeignKey('vendor.id'))
+    vendor = relationship('Vendor')
+    
     logo = Column(String(255), nullable=True)
     trade_price = Column(Float, nullable=True)
     retail_price = Column(Float, nullable=True)
@@ -81,6 +85,12 @@ class Product(Base):
     trade_by_order = Column(Boolean, nullable=True)
     is_new = Column(Boolean, nullable=True)
     is_special_price = Column(Boolean, nullable=True)
+    
+    def get_view_name(self):
+        return "{0} {1}".format(self.vendor.name, self.name)
+        
+    def get_view_retail_price(self):
+        return "{0} руб.".format(self.retail_price)
     
     @staticmethod
     def products(s, start=0, size=20, order_by=None):
