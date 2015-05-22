@@ -73,7 +73,7 @@ class Product(Base):
     desc = Column(Text, nullable=True)
     
     vendor_id = Column(Integer, ForeignKey('vendor.id'))
-    vendor = relationship('Vendor')
+    vendor = relationship('Vendor', backref="product")
     
     logo = Column(String(255), nullable=True)
     trade_price = Column(Float, nullable=True)
@@ -87,7 +87,9 @@ class Product(Base):
     is_special_price = Column(Boolean, nullable=True)
     
     def get_view_name(self):
-        return "{0} {1}".format(self.vendor.name, self.name)
+        if self.vendor is not None :
+            return "{0} {1}".format(self.vendor.name, self.name)
+        return self.name
         
     def get_view_retail_price(self):
         return "{0} руб.".format(self.retail_price)

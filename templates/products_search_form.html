@@ -3,6 +3,28 @@
         Наименование
         <input type="text" name="term" class="width-75" value="{% if args.term %}{{ args.term }}{% endif %}"/>
     </label>
+    <label>
+        Цена
+        <ul class="forms-inline-list">
+            <li>
+                <input type="text" name="phone-number-1" size="11" value="{% if args.retail_price_from %}{{ args.retail_price_from }}{% endif %}"/>
+            </li>
+                &#160;-&#160;&#160;<input type="text" name="phone-number-2" size="11" value="{% if args.retail_price_to %}{{ args.retail_price_to }}{% endif %}"/>
+            </li>
+        </ul>
+    </label>
+    {% if vendors %}
+    <label>
+        <ul class="forms-list">
+            {% for vendor in vendors %}
+                <li>
+                   <input type="checkbox" name="vendor" id="vendor-{{ vendor.id }}" value="{{ vendor.id }}" checked="checked"/>
+                   <label for="vendor-{{ vendor.id }}">{{ vendor.name }}</label>
+                </li>
+            {% endfor %}
+        </ul>
+    </label>
+    {% endif %}
     <p>
         <input type="submit" class="btn-blue"/>
         <input type="reset"  class="btn"/>

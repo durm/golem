@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
 
 from flask import Flask, render_template, request, redirect, url_for, g, abort, Response
-from sqlalchemy import func, or_
+from sqlalchemy import func, or_, distinct
 from golem.backend.engine import session
 from golem.backend.models import Rubric, Product, Vendor
 from golem.update_taxonomy import update_taxonomy
@@ -137,10 +137,14 @@ def products_search():
     term = request.args.get("term")
     
     products = g.db.query(Product)
+    vendors = []
+    
     if term :
         term = "%{0}%".format(term)
-        products = products.filter(or_(Product.name.like(term), Product.desc.like(term)))
-        
+        pred = or_(Product.name.like(term), Product.desc.like(term))
+        products = products.filter(pred)
+        vendors = []
+    
     products_count = products.count()
     products = products.offset(start).limit(size)
     args = request.args.copy()
@@ -161,6 +165,7 @@ def products_search():
         "prev": prev_query_args,
         "next": next_query_args,
         "args": args,
+        "vendors": vendors,
     }
     return render_template("products_search.html", **kw)    
     
