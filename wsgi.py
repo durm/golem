@@ -123,7 +123,6 @@ def build_view_name(*args):
     return "_".join(args)
     
 def query_string(args):
-    print (list(args.items()))
     return "&".join(map(lambda x: "=".join(map(str, x)), args.items()))
     
 @application.route("/products/search/")
@@ -135,14 +134,23 @@ def products_search():
     roots = Rubric.get_children(g.db, rubric=None)
     
     term = request.args.get("term")
+    vendor = request.args.getlist("vendor")
+    vendor_ = request.args.get("vendor_", "")
     
     products = g.db.query(Product)
-    vendors = []
+    vendors = g.db.query(Vendor)
     retail_price_from = request.args.get("retail_price_from", 0)
     
     retail_price_to = request.args.get("retail_price_to", 0)
     
     prd_preds = []
+    
+    if vendor_ != "" and vendor :
+        prd_preds.append(Product.vendor_id == vendor_)
+    elif vendor and vendor_ == "" :
+        prd_preds.append(Product.vendor_id.in_(map(int, vendor)))
+    else:
+        pass
     if retail_price_from :
         prd_preds.append(Product.retail_price >= retail_price_from)
     if retail_price_to :
@@ -152,10 +160,14 @@ def products_search():
         term = "%{0}%".format(term)
         prd_preds.append(or_(Product.name.like(term), Product.desc.like(term)))
         
+    vendors_filtered = g.db.query(Vendor).filter(Vendor.id.in_(g.db.query(Product.vendor_id).filter(*prd_preds)))
+    
     products = products.filter(*prd_preds)
     products_count = products.count()
     products = products.offset(start).limit(size)
     args = request.args.copy()
+    psf_args = request.args.copy()
+    psf_args.pop("vendor", None)
     prev_query_args = None
     next_query_args = None
     if start - size >= 0 :
@@ -175,10 +187,11 @@ def products_search():
         "next": next_query_args,
         "args": args,
         "vendors": vendors,
+        "vendors_filtered": vendors_filtered,
+        "psf_args": psf_args,
     }
     return render_template("products_search.html", **kw)    
     
-
 @application.route(build_url(Rubric.__tablename__))
 def rubric(): return cls_list(Rubric, "Рубрики")
 
@@ -224,5 +237,4 @@ def vendor_edit(id): return "vendor edit " + str(id)
 def product_edit(id): return "product edit " + str(id)
     
 if __name__ == "__main__" :
-    
     application.run()

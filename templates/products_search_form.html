@@ -13,20 +13,18 @@
             </li>
         </ul>
     </label>
-    {% if vendors %}
-    <label>
-        <ul class="forms-list">
+    <label for="country">
+        Производитель
+        <select class="width-50" name="vendor_">
+            <option></option>
             {% for vendor in vendors %}
-                <li>
-                   <input type="checkbox" name="vendor" id="vendor-{{ vendor.id }}" value="{{ vendor.id }}" checked="checked"/>
-                   <label for="vendor-{{ vendor.id }}">{{ vendor.name }}</label>
-                </li>
+                <option value="{{ vendor.id }}">{{ vendor.name }}</option>
             {% endfor %}
-        </ul>
+        </select>
     </label>
-    {% endif %}
     <p>
-        <input type="submit" class="btn-blue"/>
+        <input type="submit" class="btn"/>
         <input type="reset"  class="btn"/>
     </p>
+    {% include "psf.html" %}
 </form>
