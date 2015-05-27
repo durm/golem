@@ -138,13 +138,21 @@ def products_search():
     
     products = g.db.query(Product)
     vendors = []
+    retail_price_from = request.args.get("retail_price_from", 0)
+    
+    retail_price_to = request.args.get("retail_price_to", 0)
+    
+    prd_preds = []
+    if retail_price_from :
+        prd_preds.append(Product.retail_price >= retail_price_from)
+    if retail_price_to :
+        prd_preds.append(Product.retail_price <= retail_price_to)
     
     if term :
         term = "%{0}%".format(term)
-        pred = or_(Product.name.like(term), Product.desc.like(term))
-        products = products.filter(pred)
-        vendors = []
-    
+        prd_preds.append(or_(Product.name.like(term), Product.desc.like(term)))
+        
+    products = products.filter(*prd_preds)
     products_count = products.count()
     products = products.offset(start).limit(size)
     args = request.args.copy()
@@ -158,6 +166,7 @@ def products_search():
         next_query_args = query_string(args)
     kw = {
         "products": products,
+        "products_count": products_count,
         "roots": roots,
         "start": start,
         "size": size,

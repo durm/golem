@@ -1,4 +1,9 @@
 {% if products %}
+    {% if products_count %}
+        <p>
+            Найдено: {{ products_count }}
+        </p>
+    {% endif %}
     <ul class="blocks-4">
         {% for product in products %}
             <li {% if loop.index + 1 % 4 == 0 %}class="block-first"{% endif %}>
