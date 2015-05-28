@@ -5,22 +5,22 @@ import os
 import uuid
 import shutil
 
-def upload_photoes(d, photoes_dir, s):
+def upload_photoes(d, photoes_dir, s, autoremove=False):
 	for name in os.listdir(d) :
 		lpath = os.path.join(d, name)
 		if os.path.isfile(lpath):
 			lname = lpath.lower() 
 			if lname.endswith(".jpg") or lname.endswith(".png") :
 				try:
-					proc_photo(lpath, photoes_dir, s)
+					proc_photo(lpath, photoes_dir, s, autoremove)
 				except Exception as e:
 					print ("Error", lpath, str(e))
 		elif os.path.isdir(lpath):
-			upload_photoes(lpath, photoes_dir, s)
+			upload_photoes(lpath, photoes_dir, s, autoremove)
 		else:
 			pass
 				
-def proc_photo(lpath, photoes_dir, s):
+def proc_photo(lpath, photoes_dir, s, autoremove=False):
 	name = lpath.lower()
 	for vendor in s.query(Vendor).all():
 		lvname = vendor.name.lower()
@@ -28,7 +28,7 @@ def proc_photo(lpath, photoes_dir, s):
 			for product in s.query(Product).filter(Product.vendor == vendor):
 				lpname = product.name.lower()
 				if lpname in name:
-					store(lpath, photoes_dir, s, product)
+					store(lpath, photoes_dir, s, product, autoremove)
 
 def generate_path():
 	return str(uuid.uuid4())[:3]
