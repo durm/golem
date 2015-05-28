@@ -76,7 +76,7 @@ class Product(Base):
     vendor = relationship('Vendor', backref="product")
     
     photo = Column(String(255), nullable=True)
-    photo_small = Column(String(255), nullable=True)
+    photo_small = Column(String(255), nullable=True) 
     trade_price = Column(Float, nullable=True)
     retail_price = Column(Float, nullable=True)
     available_for_trade = Column(Boolean, nullable=True)

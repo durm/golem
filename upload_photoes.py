@@ -33,7 +33,7 @@ def proc_photo(lpath, photoes_dir, s):
 def generate_path():
 	return str(uuid.uuid4())[:3]
 					
-def store(lpath, photoes_dir, s, product):
+def store(lpath, photoes_dir, s, product, autoremove=False):
 	dpath = os.path.join(photoes_dir, generate_path())
 	fpath = os.path.join(dpath, str(product.id))
 	fpath_small = fpath + "_small"
@@ -44,12 +44,14 @@ def store(lpath, photoes_dir, s, product):
 	product.photo = fpath
 	product.photo_small = fpath_small
 	s.add(product)
+	if autoremove:
+		os.remove(lpath)
 	print (fpath)
 		
 if __name__ == "__main__":
 	import sys
 	from golem.backend.engine import session
 	s = session()
-	upload_photoes(sys.argv[1], sys.argv[2], s)
+	upload_photoes(sys.argv[1], sys.argv[2], s, autoremove=True)
 	s.commit()
 	
