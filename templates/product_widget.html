@@ -8,10 +8,11 @@
     <img src="{{ photo_url }}" class="product_widget_photo_small"/>
     </div>
     <div>
-    {% if product.name and product.name|length > 20 %}
-        {{ product.get_view_name()[:17] }}...
+    {% set product_name = product.get_view_name() %}
+    {% if product_name|length > 20 %}
+        {{ product_name[:17] }}...
     {% else %}
-        {{ product.get_view_name() }}
+        {{ product_name }}
     {% endif %}
     </div>
     <div>{{ product.retail_price }} руб</div>

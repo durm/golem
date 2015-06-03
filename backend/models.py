@@ -90,7 +90,7 @@ class Product(Base):
     def get_view_name(self):
         if self.vendor is not None :
             return "{0} {1}".format(self.vendor.name, self.name)
-        return self.name
+        return self.name if self.name is not None else ""
         
     def get_view_retail_price(self):
         return "{0} руб.".format(self.retail_price)
