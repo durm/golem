@@ -118,3 +118,17 @@ content: "\00BB \0020";
     box-shadow: 0 1px 3px #888 inset;
     color: rgba(0, 0, 0, 0.4);
 }
+
+.product_widget_photo_small {
+    max-height: 128px;
+    max-width: 128px;
+}
+
+.product_widget_photo {
+    max-height: 500px;
+    max-width: 500px;
+}
+
+.unavailable {
+    background-color: #ececec;
+}

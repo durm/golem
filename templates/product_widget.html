@@ -1,9 +1,10 @@
-<a href="{{ url_for('taxonomy_product', id=product.id) }}" title="{{ product.name }}" style="text-decoration: none;">
+<a href="{{ url_for('taxonomy_product', id=product.id) }}" title="{{ product.name }}" class="{% if not product.available %}unavailable {% endif %}" style="text-decoration: none;">
     {% if product.photo_small %}
-        <img src="/media/photoes/{{ product.photo_small }}" style="max-width: 128px; max-height: 128px;"/>
+        {% set photo_url = product.photo_small %}
     {% else %}
-        <img src="/static/img/product-128.png" style="max-width: 128px; max-height: 128px;"/>
+        {% set photo_url = "/static/img/product-128.png" %}
     {% endif %}
+    <img src="{{ photo_url }}" class="product_widget_photo_small"/>
     <div>
     {% if product.name and product.name|length > 20 %}
         {{ product.get_view_name()[:17] }}...

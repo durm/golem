@@ -36,13 +36,16 @@ def generate_path():
 	return str(uuid.uuid4())[:3]
 					
 def store(lpath, photoes_dir, s, product, autoremove=False):
-	dpath = os.path.join(photoes_dir, generate_path())
-	fpath = os.path.join(dpath, str(product.id))
+	g = generate_path()
+	dpath = os.path.join(photoes_dir, g)
+	fpath = os.path.join(g, str(product.id))
 	fpath_small = fpath + "_small"
 	if not os.path.exists(dpath):
 		os.makedirs(dpath)
-	shutil.copy(lpath, fpath)
-	shutil.copy(lpath, fpath_small)
+	full_path = os.path.join(photoes_dir, fpath)
+	full_path_small = os.path.join(photoes_dir, fpath_small)
+	shutil.copy(lpath, full_path)
+	shutil.copy(lpath, full_path_small)
 	product.photo = fpath
 	product.photo_small = fpath_small
 	s.add(product)
