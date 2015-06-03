@@ -1,6 +1,6 @@
 <a href="{{ url_for('taxonomy_product', id=product.id) }}" title="{{ product.name }}" class="{% if not product.available %}unavailable {% endif %}" style="text-decoration: none;">
     {% if product.photo_small %}
-        {% set photo_url = product.photo_small %}
+        {% set photo_url = product.get_small_photo_url() %}
     {% else %}
         {% set photo_url = "/static/img/product-128.png" %}
     {% endif %}

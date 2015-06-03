@@ -94,7 +94,15 @@ class Product(Base):
         
     def get_view_retail_price(self):
         return "{0} руб.".format(self.retail_price)
-    
+        
+    def get_small_photo_url(self):
+        if self.photo_small :
+            return "/media/photoes/" + self.photo_small
+
+    def get_photo_url(self):
+        if self.photo:
+            return "/media/photoes/" + self.photo
+        
     @staticmethod
     def products(s, start=0, size=20, order_by=None):
         prds = s.query(Product)
