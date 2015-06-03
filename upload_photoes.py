@@ -30,6 +30,7 @@ def proc_photo(lpath, photoes_dir, s, autoremove=False):
 			for product in s.query(Product).filter(Product.vendor == vendor):
 				lpname = product.name.lower()
 				if lpname in name:
+					print ("store")
 					store(lpath, photoes_dir, s, product, autoremove)
 
 def generate_path():
