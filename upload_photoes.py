@@ -9,7 +9,7 @@ import traceback
 def upload_photoes(d, photoes_dir, s, autoremove=False):
 	for name in os.listdir(d) :
 		
-		lpath = os.path.join(d, name.encode('utf-8'))
+		lpath = os.path.join(d, name)
 		if os.path.isfile(lpath):
 			lname = lpath.lower() 
 			if lname.endswith(".jpg") or lname.endswith(".png") :
