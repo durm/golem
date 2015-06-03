@@ -4,6 +4,7 @@ from golem.backend.models import Product, Vendor
 import os
 import uuid
 import shutil
+import traceback
 
 def upload_photoes(d, photoes_dir, s, autoremove=False):
 	for name in os.listdir(d) :
@@ -14,7 +15,7 @@ def upload_photoes(d, photoes_dir, s, autoremove=False):
 				try:
 					proc_photo(lpath, photoes_dir, s, autoremove)
 				except Exception as e:
-					print ("Error", lpath, str(e))
+					traceback.print_exc()
 		elif os.path.isdir(lpath):
 			upload_photoes(lpath, photoes_dir, s, autoremove)
 		else:
@@ -54,4 +55,3 @@ if __name__ == "__main__":
 	s = session()
 	upload_photoes(sys.argv[1], sys.argv[2], s, autoremove=True)
 	s.commit()
-	
