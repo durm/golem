@@ -1,8 +1,8 @@
 <a href="{{ url_for('taxonomy_product', id=product.id) }}" title="{{ product.name }}" style="text-decoration: none;">
-    {% if not product.photo_small %}
-        <img src="/media/photoes/{{ product.photo_small }}"/>
+    {% if product.photo_small %}
+        <img src="/media/photoes/{{ product.photo_small }}" style="max-width: 128px; max-height: 128px;"/>
     {% else %}
-        <img src="/static/img/product-128.png"/>
+        <img src="/static/img/product-128.png" style="max-width: 128px; max-height: 128px;"/>
     {% endif %}
     <div>
     {% if product.name and product.name|length > 20 %}
