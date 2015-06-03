@@ -13,6 +13,7 @@ def upload_photoes(d, photoes_dir, s, autoremove=False):
 			lname = lpath.lower() 
 			if lname.endswith(".jpg") or lname.endswith(".png") :
 				try:
+					print (lname)
 					proc_photo(lpath, photoes_dir, s, autoremove)
 				except Exception as e:
 					traceback.print_exc()
