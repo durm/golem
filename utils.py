@@ -33,10 +33,12 @@ def get_id():
 def retrieve(url, fname):
     urllib.urlretrieve(url, fname)
 
-def add_watermark(orig, mark, dest=None):
+def add_watermark(orig, mark, dest=None, thumbnail=None):
     baseim = Image.open(orig)
     logoim = Image.open(mark)
     baseim.paste(logoim, (baseim.size[0]-logoim.size[0], baseim.size[1]-logoim.size[1]))
+    if thumbnail is not None:
+        im.thumbnail(thumbnail)
     if dest is None :
         dest = orig
     baseim.convert("RGB").save(dest,"JPEG")
