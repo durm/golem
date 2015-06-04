@@ -52,8 +52,8 @@ def store(lpath, photoes_dir, s, product, autoremove=False):
 	shutil.copy(lpath, full_path)
 	shutil.copy(lpath, full_path_small)
 	try:
-		add_watermark(full_path, aksconf.WATERMARK, thumbnail=500)
-		add_watermark(full_path_small, aksconf.WATERMARK, thumbnail=128)
+		add_watermark(full_path, aksconf.WATERMARK, thumbnail=(500, 500))
+		add_watermark(full_path_small, aksconf.WATERMARK, thumbnail=(128,128))
 	except:
 		pass
 	product.photo = fpath
