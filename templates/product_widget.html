@@ -4,8 +4,8 @@
     {% else %}
         {% set photo_url = "/static/img/product-128.png" %}
     {% endif %}
-    <div style="width: 128px; height: 128px;">
-    <img src="{{ photo_url }}" class="product_widget_photo_small"/>
+    <div class="photo_container" style="width: 128px; height: 128px;">
+    <img src="{{ photo_url }}" class="photo product_widget_photo_small"/>
     </div>
     <div>
     {% set product_name = product.get_view_name() %}

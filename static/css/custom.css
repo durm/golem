@@ -132,3 +132,15 @@ content: "\00BB \0020";
 .unavailable {
     background-color: #ececec;
 }
+
+.photo_container {
+  -webkit-transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+}
+
+.photo {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
