@@ -5,6 +5,12 @@ import os
 import uuid
 import shutil
 import traceback
+from golem.utils import add_watermark
+
+try:
+	import aksconf
+except:
+	pass
 
 def upload_photoes(d, photoes_dir, s, autoremove=False):
 	for name in os.listdir(d) :
@@ -45,6 +51,11 @@ def store(lpath, photoes_dir, s, product, autoremove=False):
 	full_path_small = os.path.join(photoes_dir, fpath_small)
 	shutil.copy(lpath, full_path)
 	shutil.copy(lpath, full_path_small)
+	try:
+		add_watermark(full_path, aksconf.WATERMARK)
+		add_watermark(full_path_small, aksconf.WATERMARK)
+	except:
+		pass
 	product.photo = fpath
 	product.photo_small = fpath_small
 	s.add(product)
