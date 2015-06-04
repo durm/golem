@@ -55,7 +55,7 @@ def store(lpath, photoes_dir, s, product, autoremove=False):
 		add_watermark(full_path, aksconf.WATERMARK, thumbnail=(500, 500))
 		add_watermark(full_path_small, aksconf.WATERMARK, thumbnail=(128,128))
 	except:
-		pass
+		traceback.print_exc()
 	product.photo = fpath
 	product.photo_small = fpath_small
 	s.add(product)
