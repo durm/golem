@@ -106,7 +106,8 @@ class Product(Base):
     @staticmethod
     def products(s, start=0, size=20, order_by=None):
         prds = s.query(Product)
-        prds = prds.order_by(order_by) if order_by is not None else prds
+        if order_by is not None :
+            prds = prds.order_by(order_by)
         return prds.offset(start).limit(size)
     
     @staticmethod
@@ -114,7 +115,7 @@ class Product(Base):
         order_by_list = [func.random(), func.rand(), 'dbms_random.value']
         for o in order_by_list :
             try:
-                return s.query(Product).order_by(o).offset(0).limit(20)
+                return s.query(Product).order_by(o).offset(0).limit(finish)
             except:
                 pass
         return []

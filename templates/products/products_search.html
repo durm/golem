@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base/base.html" %}
 
 {% block page_title %}Продукты{% endblock %}
 
@@ -22,13 +22,13 @@
 
     <div class="units-row">
         <div class="unit-30" style="overflow-x: auto; white-space: nowrap;">
-            {% include "products_search_form.html" %}
+            {% include "products/parts/products_search_form.html" %}
             
         </div>
         <div class="unit-70">
-            {% include "products_widget.html" %}
-            {% include "pagination.html" %}
+            {% include "products/parts/products_widget.html" %}
         </div>
     </div>
 </div>
 {% endblock %}
+

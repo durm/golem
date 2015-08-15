@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base/base.html" %}
 
 {% block page_title %}{{ rubric.name }}{% endblock %}
 
@@ -35,7 +35,7 @@
             {% if rubric.desc %}
                 <h2>{{ rubric.desc }}</h2>
             {% endif %}
-            {% include "products_widget.html" %}
+            {% include "products/parts/products_widget.html" %}
         </div>
     </div>
 </div>

@@ -4,7 +4,7 @@
     {{ node.name }}
     {% if has_children(node) %}
         {% set axis=get_axis(node) %}
-        {% include "axis.html" %}
+        {% include "admin/parts/axis.html" %}
     {% endif %}
 </li>
 {% endfor %}

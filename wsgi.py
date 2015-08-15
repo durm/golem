@@ -25,49 +25,41 @@ def teardown_request(exception):
     if db is not None:
         db.close()
 
-@application.route("/taxonomy/update/", methods=["POST"])
-def taxonomy_update():
-    try:
-        file = request.files["file"]
-        if file :
-            rows = map(lambda x: x.decode("utf-8"), file.readlines())
-            tax = parse_taxonomy(rows)
-            update_taxonomy(tax)
-            return redirect(url_for("taxonomy"))
-        else:
-            abort(502)
-    except Exception as e :
-        trace = traceback.format_exc()
-        return str(trace)
+@application.route("/admin/taxonomy/update/", methods=["POST"])
+def admin_taxonomy_update():
+    file = request.files["file"]
+    if file :
+        rows = map(lambda x: x.decode("utf-8"), file.readlines())
+        tax = parse_taxonomy(rows)
+        update_taxonomy(tax)
+        return redirect(url_for("taxonomy"))
+    else:
+        abort(502)
         
-@application.route("/taxonomy/")
-def taxonomy():
+@application.route("/admin/taxonomy/")
+def admin_taxonomy():
     get_axis=lambda x: Rubric.get_children(g.db, rubric=x)
     has_children=lambda x: Rubric.has_children(g.db, x)
     kwargs = {
         "get_axis": get_axis,
         "has_children": has_children
     }
-    return render_template("taxonomy.html", **kwargs)
+    return render_template("admin/products/taxonomy.html", **kwargs)
     
-@application.route("/price/upload/")
-def price_upload():
+@application.route("/admin/price/upload/")
+def admin_price_upload():
     kwargs = {}
-    return render_template("price_upload.html", **kwargs)
+    return render_template("admin/products/price_upload.html", **kwargs)
     
-@application.route("/price/parse/", methods=["POST"])
-def price_parse():
-    try:
-        file = request.files["file"]
-        if file :
-            price = xls_to_xml_by_fileobject(file)
-            update_products(price)
-            return redirect(url_for('price_upload'))
-        else:
-            abort(502)
-    except Exception as e :
-        trace = traceback.format_exc()
-        return str(trace)
+@application.route("/admin/price/parse/", methods=["POST"])
+def admin_price_parse():
+    file = request.files["file"]
+    if file :
+        price = xls_to_xml_by_fileobject(file)
+        update_products(price)
+        return redirect(url_for('admin_price_upload'))
+    else:
+        abort(502)
 
 @application.route("/", defaults={'id': 0})
 @application.route("/taxonomy/rubric/", defaults={'id': 0}) 
@@ -90,7 +82,7 @@ def taxonomy_rubric(id):
         "has_children": has_children,
         "products": products,
     }
-    return render_template("taxonomy_rubric.html", **kwargs)
+    return render_template("products/taxonomy_rubric.html", **kwargs)
     
 @application.route("/taxonomy/product/<id>/")
 def taxonomy_product(id):
@@ -99,7 +91,7 @@ def taxonomy_product(id):
     kwargs = {
         "product": product,
     }
-    return render_template("taxonomy_product.html", **kwargs)
+    return render_template("products/taxonomy_product.html", **kwargs)
 
 def cls_list_args(cls, h):
     objs = g.db.query(cls).all()
@@ -124,73 +116,120 @@ def build_view_name(*args):
     
 def query_string(args):
     return "&".join(map(lambda x: "=".join(map(str, x)), args.items()))
-    
-@application.route("/products/search/")
-def products_search():
-    start = int(request.args.get("start", 0))
-    size = int(request.args.get("size", 20))
-    if 0 > size > 20 : size = 20
-    if 0 > start : start = 0
-    roots = Rubric.get_children(g.db, rubric=None)
-    
-    term = request.args.get("term")
-    vendor = request.args.getlist("vendor")
-    vendor_ = request.args.get("vendor_", "")
-    
-    products = g.db.query(Product)
-    vendors = g.db.query(Vendor)
-    retail_price_from = request.args.get("retail_price_from", 0)
-    
-    retail_price_to = request.args.get("retail_price_to", 0)
-    
-    prd_preds = []
-    
+
+def add_vendor_predicate(prd_preds, vendor_, vendor, Product):
     if vendor_ != "" and vendor :
         prd_preds.append(Product.vendor_id == vendor_)
     elif vendor and vendor_ == "" :
         prd_preds.append(Product.vendor_id.in_(map(int, vendor)))
     else:
         pass
+
+def add_retail_price_from_predicate(prd_preds, retail_price_from, Product):
     if retail_price_from :
         prd_preds.append(Product.retail_price >= retail_price_from)
+
+def add_retail_price_to_predicate(prd_preds, retail_price_to, Product):
     if retail_price_to :
         prd_preds.append(Product.retail_price <= retail_price_to)
-    
+
+def add_term_predicate(prd_preds, term, Product):		
     if term :
         term = "%{0}%".format(term)
         prd_preds.append(or_(Product.name.like(term), Product.desc.like(term)))
+
+def get_start(start):
+    return start if start >= 0 else 0
+
+def get_size(size):
+    return size if size > 0 and size <= 20 else 20
+
+class PaginatorUrlBuilder(object):
+    
+    def __init__(self, view, args, start, size):
+        self.view = view
+        self.args = args
+        self.start = start
+        self.size = size
+    
+    def url_prev(self):
+        self.args["start"] = self.start - self.size
+        return url_for(self.view, **self.args)
         
+    def url_next(self):
+        self.args["start"] = self.start + self.size
+        return url_for(self.view, **self.args)
+    
+class Paginator(object):
+
+    def __init__(self, count, start, size):
+        self.count = count
+        self.start = start
+        self.size = size
+        
+    def has_prev(self):
+        return self.start - self.size >= 0
+        
+    def has_next(self):
+        return self.start + self.size < self.count
+    
+    def need_pagination(self):
+        return self.has_prev() or self.has_next()
+    
+@application.route("/products/search/")
+def products_search():
+
+    req = request.args.copy()
+
+    start = get_start(int(request.args.get("start", 0)))
+    size = get_size(int(request.args.get("size", 20)))
+	
+    term = request.args.get("term")
+    vendor = request.args.getlist("vendor")
+    vendor_ = request.args.get("vendor_", "")
+    
+    retail_price_from = request.args.get("retail_price_from", 0)    
+    retail_price_to = request.args.get("retail_price_to", 0)
+
+    products = g.db.query(Product)
+    vendors = g.db.query(Vendor)
+    
+    prd_preds = []
+    
+    add_vendor_predicate(prd_preds, vendor_, vendor, Product)
+    add_retail_price_from_predicate(prd_preds, retail_price_from, Product)
+    add_retail_price_to_predicate(prd_preds, retail_price_to, Product)
+    add_term_predicate(prd_preds, term, Product)
+    
     vendors_filtered = g.db.query(Vendor).filter(Vendor.id.in_(g.db.query(Product.vendor_id).filter(*prd_preds)))
     
     products = products.filter(*prd_preds)
     products_count = products.count()
     products = products.offset(start).limit(size)
+    
     args = request.args.copy()
     psf_args = request.args.copy()
     psf_args.pop("vendor", None)
-    prev_query_args = None
-    next_query_args = None
-    if start - size >= 0 :
-        args["start"] = start - size
-        prev_query_args = query_string(args)
-    if start + size < products_count :
-        args["start"] = start + size
-        next_query_args = query_string(args)
+    
+    roots = Rubric.get_children(g.db, rubric=None)
+	
+    paginator = Paginator(products_count, start, size)
+    paginator_url_builder = PaginatorUrlBuilder("products_search", args, start, size)
+    
+    
     kw = {
+        "paginator": paginator,
+        "paginator_url_builder": paginator_url_builder, 
         "products": products,
         "products_count": products_count,
         "roots": roots,
-        "start": start,
-        "size": size,
         "obj_count": products_count,
-        "prev": prev_query_args,
-        "next": next_query_args,
         "args": args,
         "vendors": vendors,
         "vendors_filtered": vendors_filtered,
         "psf_args": psf_args,
     }
-    return render_template("products_search.html", **kw)    
+    return render_template("products/products_search.html", **kw)    
     
 @application.route(build_url(Rubric.__tablename__))
 def rubric(): return cls_list(Rubric, "Рубрики")
@@ -235,6 +274,10 @@ def vendor_edit(id): return "vendor edit " + str(id)
 
 @application.route(build_url(Product.__tablename__, "edit", "<id>"))
 def product_edit(id): return "product edit " + str(id)
-    
+
+@application.route("/admin/function_list/")
+def function_list():
+    return render_template("admin/function_list.html")
+
 if __name__ == "__main__" :
     application.run()

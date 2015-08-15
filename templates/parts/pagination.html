@@ -1,0 +1,17 @@
+{% if paginator and paginator.need_pagination() %}
+    <ul class="pagination">
+        {% if paginator.has_prev() %}
+            <li>
+                <a href="{% if paginator_url_builder %}{{paginator_url_builder.url_prev()}}{% endif %}">&larr;</a>
+            </li>
+        {% endif %}
+        <li>
+            <span>{{paginator.start + 1}}-{{paginator.start + paginator.size}} из {{paginator.count}}</span>
+        </li>
+        {% if paginator.has_next() %}
+            <li>
+                <a href="{% if paginator_url_builder %}{{paginator_url_builder.url_next()}}{% endif %}">&rarr;</a>
+            </li>
+        {% endif %}
+    </ul>
+{% endif %}

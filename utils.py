@@ -5,6 +5,7 @@ import urllib
 from lxml import html, etree
 import html2text
 import tempfile
+import os
 
 try:
     from PIL import Image, ImageOps
@@ -42,3 +43,4 @@ def add_watermark(orig, mark, dest=None, thumbnail=None):
     if dest is None :
         dest = orig
     baseim.convert("RGB").save(dest,"JPEG")
+    
