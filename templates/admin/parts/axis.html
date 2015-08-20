@@ -1,7 +1,7 @@
 <ul>
 {% for node in axis %}
 <li>
-    {{ node.name }}
+    {{ node }}
     {% if has_children(node) %}
         {% set axis=get_axis(node) %}
         {% include "admin/parts/axis.html" %}

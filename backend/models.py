@@ -38,7 +38,6 @@ class Rubric(Base):
     path = Column(String(255), nullable=True)
     
     parent_id = Column(Integer, ForeignKey('rubric.id'))
-
     parent = relationship('Rubric', remote_side=[id])
     
     @staticmethod
@@ -63,6 +62,9 @@ class Rubric(Base):
         #return session.query(Product).filter(Rubric.rubrics==(rubric if rubric is not None else None))
         return []
         
+    def __repr__(self):
+        return "{0} ({1})".format(self.name, self.path)
+        
 class Product(Base):
 
     __tablename__ = "product"
@@ -74,6 +76,11 @@ class Product(Base):
     
     vendor_id = Column(Integer, ForeignKey('vendor.id'))
     vendor = relationship('Vendor', backref="product")
+    
+    rubric_id = Column(Integer, ForeignKey('rubric.id'))
+    rubric = relationship('Rubric', backref="product")
+    
+    rubric_path_by_price = Column(String(256))
     
     photo = Column(String(255), nullable=True)
     photo_small = Column(String(255), nullable=True) 
@@ -102,7 +109,10 @@ class Product(Base):
     def get_photo_url(self):
         if self.photo:
             return "/media/photoes/" + self.photo
-        
+    
+    def __repr__(self):
+        return "{0} ({1})".format(self.name, self.rubric_path_by_price)
+    
     @staticmethod
     def products(s, start=0, size=20, order_by=None):
         prds = s.query(Product)

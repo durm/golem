@@ -23,7 +23,7 @@
             {% for obj in objs %}
                 <li>
                     <input type="checkbox" name="obj" value="{{ obj.id }}"/>
-                    <a href="{{ url_for(edit_url, id=obj.id) }}">{{ obj.name }}</a>
+                    <a href="{{ url_for(edit_url, id=obj.id) }}">{{ obj }}</a>
                 </li>
             {% endfor %}
         </ol>

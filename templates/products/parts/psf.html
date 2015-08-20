@@ -1,5 +1,5 @@
-{% if psf_args and vendors_filtered %}
-    {#<form method="get" action="{{ url_for('products_search', **psf_args) }}" class="forms" style="background-color: #ececec;">#}
+{% if vendors_filtered %}
+    <div>
         <h3>В найденном</h3>
         <ul class="forms-list">
             {% for vendor in vendors_filtered %}
@@ -9,9 +9,5 @@
                 </li>
             {% endfor %}
         </ul>
-    {#
-        <p>
-            <input type="submit" class="btn" value="Фильтровать"/>
-        </p>
-    </form>#}
+    </div>
 {% endif %}

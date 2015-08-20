@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 
 from lxml import etree
+import os
 
 def get_indentation_level(row, level_indent=4):
     row = row.replace("\t", " "*level_indent)
@@ -18,7 +19,7 @@ def validate(rows):
     return True
     
 def get_path(elem):
-    return "/".join([e.get("name", "") for e in elem.xpath("./ancestor::*")])
+    return "/".join([e.get("name", "") for e in elem.xpath("./ancestor-or-self::*")])
     
 def parse_taxonomy(rows):
     rows = list(rows)
@@ -30,7 +31,7 @@ def parse_taxonomy(rows):
         level = get_indentation_level(row)
         elem = etree.Element("node")
         name = row.strip().lower().capitalize()
-        elem.set("name", name.strip())
+        elem.set("name", name)
         elem.set("num", str(k))
         if level == 0 :
             current_level = level
