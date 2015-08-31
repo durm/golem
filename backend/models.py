@@ -3,7 +3,7 @@
 from sqlalchemy import Column, DateTime, String, Text, Integer, ForeignKey, func, Float, Boolean
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import relationship, backref
-from utils import get_external_desc
+from golem.utils import get_external_desc
 
 Base = declarative_base()
 
