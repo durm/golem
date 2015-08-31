@@ -3,6 +3,7 @@
 from sqlalchemy import Column, DateTime, String, Text, Integer, ForeignKey, func, Float, Boolean
 from sqlalchemy.ext.declarative import declarative_base, declared_attr
 from sqlalchemy.orm import relationship, backref
+from utils import get_external_desc
 
 Base = declarative_base()
 
@@ -73,7 +74,8 @@ class Product(Base):
 
     name = Column(String(128))
     desc = Column(Text, nullable=True)
-    
+    full_desc = Column(Text, nullable=True)
+
     vendor_id = Column(Integer, ForeignKey('vendor.id'))
     vendor = relationship('Vendor', backref="product")
     
@@ -109,7 +111,10 @@ class Product(Base):
     def get_photo_url(self):
         if self.photo:
             return "/media/photoes/" + self.photo
-    
+
+    def get_external_desc(self):
+        self.full_desc = get_external_desc(self.external_link)
+
     def __repr__(self):
         return "{0} ({1})".format(self.name, self.rubric_path_by_price)
     
