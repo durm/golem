@@ -44,3 +44,35 @@ def add_watermark(orig, mark, dest=None, thumbnail=None):
         dest = orig
     baseim.convert("RGB").save(dest,"JPEG")
     
+class Paginator(object):
+
+    def __init__(self, count, start, size):
+        self.count = count
+        self.start = start
+        self.size = size
+        
+    def has_prev(self):
+        return self.start - self.size >= 0
+        
+    def has_next(self):
+        return self.start + self.size < self.count
+    
+    def need_pagination(self):
+        return self.has_prev() or self.has_next()
+    
+class PaginatorUrlBuilder(object):
+    
+    def __init__(self, view, args, start, size, urf_for):
+        self.view = view
+        self.args = args
+        self.start = start
+        self.size = size
+        self.url_for = urf_for
+    
+    def url_prev(self):
+        self.args["start"] = self.start - self.size
+        return self.url_for(self.view, **self.args)
+        
+    def url_next(self):
+        self.args["start"] = self.start + self.size
+        return self.url_for(self.view, **self.args)

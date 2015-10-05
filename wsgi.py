@@ -7,8 +7,7 @@ from golem.backend.models import Rubric, Product, Vendor
 from golem.update_taxonomy import update_taxonomy
 from golem.update_products import update_products
 from golem.parse_taxonomy import parse_taxonomy
-from golem.utils.paginator import Paginator
-from golem.utils.paginator_url_builder import PaginatorUrlBuilder
+from golem.utils import Paginator, PaginatorUrlBuilder
 import traceback
 from golem.xls.xlstoxml import xls_to_xml_by_fileobject
 from lxml import etree
@@ -213,7 +212,7 @@ def product_search_results(predicates, start, size):
 def product_search_results_paginator(results, view, req, start, size):
     
     paginator = Paginator(results["products_count"], start, size)
-    paginator_url_builder = PaginatorUrlBuilder(view, req, start, size)
+    paginator_url_builder = PaginatorUrlBuilder(view, req, start, size, url_for)
     
     return {
         "paginator": paginator,
